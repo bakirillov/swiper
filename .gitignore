@@ -79,8 +79,6 @@ target/
 
 # exclude data from source control by default
 data/interim/
-data/processed/
-data/external/
 data/raw/
 
 # Mac OS-specific storage files
