@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module swiper_vis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>swiper_vis</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/drlapki/Works/swiper/src/swiper_vis.py">/home/drlapki/Works/swiper/src/swiper_vis.py</a></font></td></tr></table>
+    <p><tt>Script&nbsp;to&nbsp;visualize&nbsp;swiper&nbsp;results.<br>
+Takes&nbsp;a&nbsp;left.zip&nbsp;file&nbsp;(or&nbsp;pair&nbsp;of&nbsp;left.zip&nbsp;and&nbsp;right.zip)&nbsp;and&nbsp;generates&nbsp;an&nbsp;output.pdf&nbsp;file.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+<a href="convergence_test.html">convergence_test</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="posixpath.html">posixpath</a><br>
+<a href="os.html">os</a><br>
+<a href="pickle.html">pickle</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="swiper_cli.html">swiper_cli</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="swiper_vis.html#ModelResult">ModelResult</a>
+</font></dt><dt><font face="helvetica, arial"><a href="swiper_vis.html#Output">Output</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="ModelResult">class <strong>ModelResult</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#ModelResult">ModelResult</a>(pkl_path,&nbsp;n=7,&nbsp;n_value=0.1)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="ModelResult-__init__"><strong>__init__</strong></a>(self, pkl_path, n=7, n_value=0.1)</dt><dd><tt>Class&nbsp;for&nbsp;visualization&nbsp;of&nbsp;results&nbsp;for&nbsp;a&nbsp;single&nbsp;test&nbsp;and&nbsp;a&nbsp;pair&nbsp;of&nbsp;tests.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+pkl_path&nbsp;(str):&nbsp;path&nbsp;to&nbsp;model_N.pkl.<br>
+n&nbsp;(int,&nbsp;optional):&nbsp;PAM&nbsp;candidate&nbsp;length&nbsp;used&nbsp;during&nbsp;classification<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(passed&nbsp;directly&nbsp;to&nbsp;swiper.classify_all).&nbsp;Defaults&nbsp;to&nbsp;7.<br>
+n_value&nbsp;(float,&nbsp;optional):&nbsp;Scaling/weighting&nbsp;factor&nbsp;for&nbsp;the&nbsp;convergence&nbsp;score<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;calculation.&nbsp;Defaults&nbsp;to&nbsp;0.1.</tt></dd></dl>
+
+<dl><dt><a name="ModelResult-consensus"><strong>consensus</strong></a>(self, fnmask)</dt><dd><tt>The&nbsp;main&nbsp;method&nbsp;for&nbsp;generating&nbsp;a&nbsp;consensus.<br>
+&nbsp;<br>
+This&nbsp;method&nbsp;executes&nbsp;the&nbsp;full&nbsp;workflow&nbsp;in&nbsp;one&nbsp;call:<br>
+1.&nbsp;Screens&nbsp;all&nbsp;PAMs.<br>
+2.&nbsp;Isolates&nbsp;only&nbsp;the&nbsp;"cleaved"&nbsp;(positive)&nbsp;predictions.<br>
+3.&nbsp;Derives&nbsp;the&nbsp;degenerate&nbsp;consensus&nbsp;motif.<br>
+4.&nbsp;Draws&nbsp;the&nbsp;sequence&nbsp;logo&nbsp;and&nbsp;saves&nbsp;it&nbsp;as&nbsp;a&nbsp;PNG.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+fnmask&nbsp;(str):&nbsp;Base&nbsp;directory&nbsp;or&nbsp;filename&nbsp;prefix&nbsp;for&nbsp;the&nbsp;output&nbsp;PNG.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;final&nbsp;path&nbsp;will&nbsp;be:&nbsp;{fnmask}+.logo.png<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+consensus&nbsp;(str):&nbsp;The&nbsp;degenerate&nbsp;motif&nbsp;shown&nbsp;in&nbsp;the&nbsp;logo.</tt></dd></dl>
+
+<dl><dt><a name="ModelResult-load_model"><strong>load_model</strong></a>(self)</dt><dd><tt>Loads&nbsp;a&nbsp;pickled&nbsp;classification&nbsp;model&nbsp;from&nbsp;the&nbsp;disk.<br>
+&nbsp;<br>
+Each&nbsp;protein&nbsp;and&nbsp;each&nbsp;active&nbsp;learning&nbsp;round&nbsp;has&nbsp;its&nbsp;own&nbsp;trained&nbsp;model.<br>
+These&nbsp;models&nbsp;are&nbsp;the&nbsp;core&nbsp;classifiers&nbsp;used&nbsp;to&nbsp;predict&nbsp;which&nbsp;PAMs&nbsp;are&nbsp;cleaved.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+<a href="builtins.html#object">object</a>:&nbsp;Deserialized&nbsp;model.</tt></dd></dl>
+
+<dl><dt><a name="ModelResult-screen"><strong>screen</strong></a>(self)</dt><dd><tt>Runs&nbsp;the&nbsp;full&nbsp;PAM&nbsp;classification&nbsp;screen&nbsp;for&nbsp;a&nbsp;given&nbsp;protein/step.<br>
+&nbsp;<br>
+This&nbsp;replicates&nbsp;the&nbsp;computational&nbsp;screening&nbsp;that&nbsp;underlies&nbsp;the&nbsp;experimental<br>
+data&nbsp;shown&nbsp;in&nbsp;Figure&nbsp;3.&nbsp;It&nbsp;uses&nbsp;the&nbsp;trained&nbsp;model&nbsp;to&nbsp;score/evaluate&nbsp;all<br>
+possible&nbsp;PAM&nbsp;sequences.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+pandas.DataFrame:&nbsp;Complete&nbsp;classification&nbsp;table&nbsp;with&nbsp;predictions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(includes&nbsp;a&nbsp;'Y_class'&nbsp;column&nbsp;marking&nbsp;'+'&nbsp;for&nbsp;cleaved).</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="ModelResult-draw_logo"><strong>draw_logo</strong></a>(df, fn)</dt><dd><tt>Generates&nbsp;a&nbsp;sequence&nbsp;logo&nbsp;image&nbsp;from&nbsp;the&nbsp;PAM&nbsp;column&nbsp;of&nbsp;a&nbsp;DataFrame.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+df&nbsp;(pandas.DataFrame):&nbsp;Must&nbsp;contain&nbsp;a&nbsp;column&nbsp;named&nbsp;"PAM".<br>
+fn&nbsp;(str):&nbsp;Absolute&nbsp;or&nbsp;relative&nbsp;filepath&nbsp;where&nbsp;the&nbsp;.png&nbsp;logo&nbsp;will&nbsp;be&nbsp;saved.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Output">class <strong>Output</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Output">Output</a>(tmplt,&nbsp;name,&nbsp;left,&nbsp;right=None,&nbsp;convergence=None)<br>
+&nbsp;<br>
+A&nbsp;class&nbsp;to&nbsp;generate&nbsp;formatted&nbsp;output&nbsp;strings&nbsp;from&nbsp;a&nbsp;template&nbsp;file.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+tmplt&nbsp;(str):&nbsp;Path&nbsp;to&nbsp;the&nbsp;template&nbsp;file.<br>
+name&nbsp;(str):&nbsp;Name&nbsp;of&nbsp;the&nbsp;experiment.<br>
+left&nbsp;(list):&nbsp;List&nbsp;containing&nbsp;left&nbsp;consensus&nbsp;string&nbsp;and&nbsp;logo.<br>
+right&nbsp;(list,&nbsp;optional):&nbsp;List&nbsp;containing&nbsp;right&nbsp;consensus&nbsp;string&nbsp;and&nbsp;logo.&nbsp;Defaults&nbsp;to&nbsp;None.<br>
+convergence&nbsp;(list,&nbsp;optional):&nbsp;List&nbsp;containing&nbsp;convergence&nbsp;details.&nbsp;Defaults&nbsp;to&nbsp;None.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Output-__init__"><strong>__init__</strong></a>(self, tmplt, name, left, right=None, convergence=None)</dt><dd><tt>Initializes&nbsp;the&nbsp;<a href="#Output">Output</a>&nbsp;instance.<br>
+&nbsp;<br>
+Reads&nbsp;the&nbsp;template&nbsp;file,&nbsp;parses&nbsp;it,&nbsp;and&nbsp;performs&nbsp;string&nbsp;replacements<br>
+using&nbsp;the&nbsp;provided&nbsp;arguments.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+tmplt&nbsp;(str):&nbsp;Path&nbsp;to&nbsp;the&nbsp;template&nbsp;file.<br>
+name&nbsp;(str):&nbsp;Name&nbsp;of&nbsp;the&nbsp;experiment.<br>
+left&nbsp;(list):&nbsp;List&nbsp;containing&nbsp;left&nbsp;consensus&nbsp;string&nbsp;and&nbsp;logo.<br>
+right&nbsp;(list,&nbsp;optional):&nbsp;List&nbsp;containing&nbsp;right&nbsp;consensus&nbsp;string&nbsp;and&nbsp;logo.&nbsp;Defaults&nbsp;to&nbsp;None.<br>
+convergence&nbsp;(list,&nbsp;optional):&nbsp;List&nbsp;containing&nbsp;convergence&nbsp;details.&nbsp;Defaults&nbsp;to&nbsp;None.</tt></dd></dl>
+
+<dl><dt><a name="Output-out"><strong>out</strong></a>(self)</dt><dd><tt>Returns&nbsp;the&nbsp;formatted&nbsp;output&nbsp;string.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;The&nbsp;formatted&nbsp;string.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-get_consensus"><strong>get_consensus</strong></a>(TMP, SIZE, N_VALUE, what, file)</dt><dd><tt>&nbsp;&nbsp;&nbsp;&nbsp;Prepares&nbsp;a&nbsp;temporary&nbsp;directory,&nbsp;extracts&nbsp;a&nbsp;zip&nbsp;file,&nbsp;identifies&nbsp;the&nbsp;final&nbsp;model&nbsp;file,&nbsp;and&nbsp;computes&nbsp;the&nbsp;consensus&nbsp;sequence.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Parameters<br>
+&nbsp;&nbsp;&nbsp;&nbsp;----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;TMP&nbsp;(str):&nbsp;The&nbsp;base&nbsp;path&nbsp;for&nbsp;the&nbsp;temporary&nbsp;directory.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SIZE&nbsp;(int):&nbsp;The&nbsp;model&nbsp;size.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;N_VALUE&nbsp;(float):&nbsp;The&nbsp;N-value&nbsp;parameter.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;what&nbsp;(str):&nbsp;The&nbsp;specific&nbsp;model&nbsp;identifier.&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;(str):&nbsp;The&nbsp;path&nbsp;to&nbsp;the&nbsp;file&nbsp;containing&nbsp;the&nbsp;model&nbsp;data.&nbsp;Performs&nbsp;a&nbsp;convergence&nbsp;analysis&nbsp;using&nbsp;the&nbsp;provided&nbsp;history&nbsp;data.&nbsp;Generates&nbsp;violation&nbsp;violin&nbsp;plots&nbsp;and&nbsp;saves&nbsp;them&nbsp;to&nbsp;the&nbsp;specified&nbsp;temporary&nbsp;directory.&nbsp;Calculates&nbsp;and&nbsp;returns&nbsp;the&nbsp;computed&nbsp;p-values.<br>
+&nbsp;<br>
+:param&nbsp;TMP:&nbsp;The&nbsp;base&nbsp;path&nbsp;for&nbsp;the&nbsp;temporary&nbsp;directory&nbsp;where&nbsp;the&nbsp;plot&nbsp;is&nbsp;saved.&nbsp;:param&nbsp;history:&nbsp;The&nbsp;history&nbsp;data&nbsp;to&nbsp;be&nbsp;analyzed.&nbsp;:return:&nbsp;The&nbsp;computed&nbsp;p-values.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Returns<br>
+&nbsp;&nbsp;&nbsp;&nbsp;-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;consensus&nbsp;sequence.</tt></dd></dl>
+ <dl><dt><a name="-get_convergence"><strong>get_convergence</strong></a>(TMP, history)</dt><dd><tt>Performs&nbsp;a&nbsp;convergence&nbsp;analysis&nbsp;using&nbsp;the&nbsp;provided&nbsp;history&nbsp;data.&nbsp;<br>
+Generates&nbsp;violation&nbsp;violin&nbsp;plots&nbsp;and&nbsp;saves&nbsp;them&nbsp;to&nbsp;the&nbsp;specified&nbsp;temporary&nbsp;directory.&nbsp;<br>
+Calculates&nbsp;and&nbsp;returns&nbsp;the&nbsp;computed&nbsp;p-values.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+TMP&nbsp;(str):&nbsp;The&nbsp;base&nbsp;path&nbsp;for&nbsp;the&nbsp;temporary&nbsp;directory&nbsp;where&nbsp;the&nbsp;plot&nbsp;is&nbsp;saved.&nbsp;<br>
+history&nbsp;(np.array):&nbsp;The&nbsp;history&nbsp;data&nbsp;to&nbsp;be&nbsp;analyzed.&nbsp;<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+The&nbsp;computed&nbsp;p-values.</tt></dd></dl>
+ <dl><dt><a name="-get_final"><strong>get_final</strong></a>(L)</dt><dd><tt>Return&nbsp;the&nbsp;element&nbsp;from&nbsp;list&nbsp;L&nbsp;with&nbsp;the&nbsp;highest&nbsp;numeric&nbsp;suffix.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+L&nbsp;(list):&nbsp;A&nbsp;list&nbsp;of&nbsp;strings.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+str:&nbsp;The&nbsp;string&nbsp;from&nbsp;L&nbsp;with&nbsp;the&nbsp;highest&nbsp;integer&nbsp;suffix.</tt></dd></dl>
+</td></tr></table>
+</body></html>

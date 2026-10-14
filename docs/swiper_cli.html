@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module swiper_cli</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>swiper_cli</strong></big></big> (version 3.6.0)</font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/drlapki/Works/swiper/src/swiper_cli.py">/home/drlapki/Works/swiper/src/swiper_cli.py</a></font></td></tr></table>
+    <p><tt>Swiper&nbsp;CLI&nbsp;--&nbsp;an&nbsp;Acive&nbsp;Learning&nbsp;application&nbsp;to&nbsp;guide&nbsp;PAM&nbsp;discovery&nbsp;experiments.<br>
+This&nbsp;file&nbsp;provides&nbsp;the&nbsp;code&nbsp;to&nbsp;run&nbsp;training&nbsp;and&nbsp;provide&nbsp;suggestions.<br>
+This&nbsp;file&nbsp;is&nbsp;to&nbsp;be&nbsp;ran&nbsp;as&nbsp;a&nbsp;standalone&nbsp;script.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+<a href="weblogolib.color.html">weblogolib.color</a><br>
+<a href="weblogolib.colorscheme.html">weblogolib.colorscheme</a><br>
+<a href="cv2.html">cv2</a><br>
+</td><td width="25%" valign=top><a href="itertools.html">itertools</a><br>
+<a href="json.html">json</a><br>
+<a href="weblogolib.logomath.html">weblogolib.logomath</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="posixpath.html">posixpath</a><br>
+<a href="os.html">os</a><br>
+<a href="pandas.html">pandas</a><br>
+<a href="pickle.html">pickle</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="shutil.html">shutil</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-classify_X"><strong>classify_X</strong></a>(classifier, X, df)</dt><dd><tt>Apply&nbsp;a&nbsp;trained&nbsp;model&nbsp;to&nbsp;a&nbsp;new&nbsp;set&nbsp;of&nbsp;features&nbsp;and&nbsp;return&nbsp;two&nbsp;dataframes:<br>
+&nbsp;<br>
+1.&nbsp;A&nbsp;dataframe&nbsp;that&nbsp;contains&nbsp;all&nbsp;the&nbsp;original&nbsp;rows&nbsp;plus&nbsp;a&nbsp;column<br>
+&nbsp;&nbsp;&nbsp;``Y_class``&nbsp;with&nbsp;the&nbsp;class&nbsp;prediction&nbsp;for&nbsp;each&nbsp;sample.<br>
+&nbsp;<br>
+2.&nbsp;A&nbsp;subset&nbsp;dataframe&nbsp;containing&nbsp;only&nbsp;the&nbsp;samples&nbsp;that&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;classifier&nbsp;has&nbsp;flagged&nbsp;as&nbsp;most&nbsp;informative&nbsp;for&nbsp;the&nbsp;next<br>
+&nbsp;&nbsp;&nbsp;active‑learning&nbsp;query&nbsp;(the&nbsp;“query&nbsp;set”).<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+classifier&nbsp;:&nbsp;sklearn‑like&nbsp;estimator&nbsp;with&nbsp;a&nbsp;``predict``&nbsp;method&nbsp;and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;an&nbsp;optional&nbsp;``query``&nbsp;method<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;model&nbsp;that&nbsp;was&nbsp;previously&nbsp;trained&nbsp;on&nbsp;a&nbsp;training&nbsp;set.&nbsp;&nbsp;It&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;expected&nbsp;to&nbsp;implement&nbsp;the&nbsp;active&nbsp;learning&nbsp;API&nbsp;used&nbsp;in&nbsp;this<br>
+&nbsp;&nbsp;&nbsp;&nbsp;project,&nbsp;i.e.:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``predict(X)``&nbsp;returns&nbsp;a&nbsp;1‑D&nbsp;array&nbsp;of&nbsp;class&nbsp;labels.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``query(X)``&nbsp;returns&nbsp;a&nbsp;tuple&nbsp;``(idx,&nbsp;instance)``&nbsp;where<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``idx``&nbsp;&nbsp;–&nbsp;indices&nbsp;of&nbsp;the&nbsp;most&nbsp;uncertain&nbsp;samples&nbsp;in&nbsp;``X``<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``instance``&nbsp;–&nbsp;the&nbsp;corresponding&nbsp;feature&nbsp;vectors&nbsp;(not&nbsp;used<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;here&nbsp;but&nbsp;returned&nbsp;for&nbsp;consistency).<br>
+&nbsp;<br>
+X&nbsp;:&nbsp;np.ndarray,&nbsp;shape&nbsp;(n_samples,&nbsp;n_features)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Feature&nbsp;matrix&nbsp;for&nbsp;the&nbsp;new&nbsp;data&nbsp;to&nbsp;classify.<br>
+&nbsp;<br>
+df&nbsp;:&nbsp;pandas.DataFrame<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;dataframe&nbsp;that&nbsp;must&nbsp;contain&nbsp;the&nbsp;same&nbsp;number&nbsp;of&nbsp;rows&nbsp;as<br>
+&nbsp;&nbsp;&nbsp;&nbsp;``X``&nbsp;(in&nbsp;the&nbsp;same&nbsp;order).&nbsp;&nbsp;It&nbsp;is&nbsp;usually&nbsp;created&nbsp;by&nbsp;reading<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;FASTA&nbsp;or&nbsp;similar&nbsp;file.&nbsp;&nbsp;Only&nbsp;the&nbsp;column&nbsp;names&nbsp;of&nbsp;``df``&nbsp;are<br>
+&nbsp;&nbsp;&nbsp;&nbsp;preserved&nbsp;–&nbsp;new&nbsp;columns&nbsp;are&nbsp;added&nbsp;in‑place.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+tuple<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``df``&nbsp;(modified):&nbsp;the&nbsp;original&nbsp;dataframe&nbsp;with&nbsp;an&nbsp;added<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;column&nbsp;``Y_class``&nbsp;containing&nbsp;the&nbsp;predicted&nbsp;class&nbsp;for&nbsp;each<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;row.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``df.iloc[query_idx]``:&nbsp;a&nbsp;dataframe&nbsp;with&nbsp;the&nbsp;rows&nbsp;that&nbsp;were<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selected&nbsp;by&nbsp;``classifier.query``.&nbsp;&nbsp;These&nbsp;rows&nbsp;are&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;most&nbsp;uncertain&nbsp;samples&nbsp;and&nbsp;will&nbsp;typically&nbsp;be&nbsp;sent&nbsp;back&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;experimenter&nbsp;for&nbsp;labeling.<br>
+&nbsp;<br>
+Example<br>
+-------<br>
+&gt;&gt;&gt;&nbsp;df_pool&nbsp;=&nbsp;pd.DataFrame({'PAM':&nbsp;['ACGT',&nbsp;'CGTA',&nbsp;'GTAC']})<br>
+&gt;&gt;&gt;&nbsp;X_pool&nbsp;=&nbsp;np.stack([<a href="#-onehot">onehot</a>(s)&nbsp;for&nbsp;s&nbsp;in&nbsp;df_pool['PAM']])<br>
+&gt;&gt;&gt;&nbsp;model&nbsp;=&nbsp;<a href="#-make_RF">make_RF</a>()<br>
+&gt;&gt;&gt;&nbsp;model&nbsp;=&nbsp;<a href="#-train">train</a>(X_train,&nbsp;y_train,&nbsp;model,&nbsp;uncertainty_batch_sampling,&nbsp;10,&nbsp;tmp)<br>
+&gt;&gt;&gt;&nbsp;df_full,&nbsp;df_query&nbsp;=&nbsp;<a href="#-classify_X">classify_X</a>(model,&nbsp;X_pool,&nbsp;df_pool)<br>
+&gt;&gt;&gt;&nbsp;df_full.head()</tt></dd></dl>
+ <dl><dt><a name="-classify_all"><strong>classify_all</strong></a>(classifier, n=7)</dt><dd><tt>Classify&nbsp;every&nbsp;possible&nbsp;PAM&nbsp;sequence&nbsp;of&nbsp;a&nbsp;given&nbsp;length.<br>
+&nbsp;<br>
+The&nbsp;function&nbsp;is&nbsp;useful&nbsp;when&nbsp;the&nbsp;experimenter&nbsp;wants&nbsp;to&nbsp;know&nbsp;how&nbsp;the<br>
+current&nbsp;model&nbsp;would&nbsp;classify&nbsp;all&nbsp;sequences&nbsp;in&nbsp;the&nbsp;combinatorial<br>
+space&nbsp;before&nbsp;deciding&nbsp;which&nbsp;ones&nbsp;to&nbsp;test&nbsp;next.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+classifier&nbsp;:&nbsp;sklearn‑like&nbsp;estimator<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;model&nbsp;that&nbsp;implements&nbsp;``predict``&nbsp;and&nbsp;``query``&nbsp;(the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;active‑learning&nbsp;API).&nbsp;&nbsp;It&nbsp;is&nbsp;expected&nbsp;to&nbsp;have&nbsp;been&nbsp;trained<br>
+&nbsp;&nbsp;&nbsp;&nbsp;previously&nbsp;on&nbsp;a&nbsp;labelled&nbsp;dataset.<br>
+&nbsp;<br>
+n&nbsp;:&nbsp;int,&nbsp;optional&nbsp;(default:&nbsp;7)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Length&nbsp;of&nbsp;the&nbsp;PAM&nbsp;sequences&nbsp;to&nbsp;enumerate.&nbsp;&nbsp;The&nbsp;total&nbsp;number<br>
+&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;combinations&nbsp;is&nbsp;``4**n``&nbsp;(since&nbsp;each&nbsp;position&nbsp;can&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A/T/G/C).<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+tuple<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;pandas.DataFrame&nbsp;containing&nbsp;a&nbsp;column&nbsp;``PAM``&nbsp;with&nbsp;all<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequences&nbsp;and&nbsp;an&nbsp;added&nbsp;column&nbsp;``Y_class``&nbsp;with&nbsp;the&nbsp;model’s<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;predictions&nbsp;(returned&nbsp;by&nbsp;:func:`classify_X`).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;A&nbsp;second&nbsp;DataFrame&nbsp;that&nbsp;contains&nbsp;only&nbsp;the&nbsp;rows&nbsp;that&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;classifier&nbsp;has&nbsp;selected&nbsp;as&nbsp;the&nbsp;most&nbsp;informative&nbsp;queries<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(the&nbsp;query&nbsp;set).</tt></dd></dl>
+ <dl><dt><a name="-compute_steps"><strong>compute_steps</strong></a>(v, n=50)</dt><dd><tt>Generate&nbsp;a&nbsp;sequence&nbsp;of&nbsp;evenly‑spaced&nbsp;"step"&nbsp;values&nbsp;within&nbsp;the&nbsp;range<br>
+spanned&nbsp;by&nbsp;the&nbsp;input&nbsp;array.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+v&nbsp;:&nbsp;array‑like,&nbsp;shape&nbsp;(m,)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Numerical&nbsp;data&nbsp;from&nbsp;which&nbsp;the&nbsp;minimum&nbsp;and&nbsp;maximum&nbsp;are<br>
+&nbsp;&nbsp;&nbsp;&nbsp;derived.&nbsp;&nbsp;The&nbsp;function&nbsp;does&nbsp;not&nbsp;sort&nbsp;the&nbsp;input;&nbsp;only&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;extreme&nbsp;values&nbsp;matter.<br>
+n&nbsp;:&nbsp;int,&nbsp;optional&nbsp;(default:&nbsp;50)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desired&nbsp;number&nbsp;of&nbsp;points&nbsp;*insid*&nbsp;the&nbsp;interval.&nbsp;&nbsp;The&nbsp;actual<br>
+&nbsp;&nbsp;&nbsp;&nbsp;number&nbsp;returned&nbsp;is&nbsp;`n‑1`&nbsp;because&nbsp;the&nbsp;first&nbsp;point&nbsp;is&nbsp;discarded.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+numpy.ndarray,&nbsp;shape&nbsp;(n‑1,)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;linearly&nbsp;spaced&nbsp;array&nbsp;that&nbsp;starts&nbsp;just&nbsp;after&nbsp;the&nbsp;minimum<br>
+&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;`v`&nbsp;and&nbsp;ends&nbsp;just&nbsp;before&nbsp;the&nbsp;maximum&nbsp;of&nbsp;`v`.&nbsp;&nbsp;The&nbsp;spacing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;between&nbsp;successive&nbsp;elements&nbsp;is&nbsp;`(max(v)&nbsp;-&nbsp;min(v))&nbsp;/&nbsp;n`.</tt></dd></dl>
+ <dl><dt><a name="-make_RF"><strong>make_RF</strong></a>()</dt><dd><tt>Create&nbsp;and&nbsp;return&nbsp;a&nbsp;fresh&nbsp;scikit‑learn&nbsp;``RandomForestClassifier``.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+sklearn.ensemble.RandomForestClassifier<br>
+&nbsp;&nbsp;&nbsp;&nbsp;An&nbsp;un‑trained&nbsp;random‑forest&nbsp;model&nbsp;ready&nbsp;for&nbsp;``fit``/``predict``.<br>
+&nbsp;<br>
+Notes<br>
+-----<br>
+*&nbsp;No&nbsp;arguments&nbsp;are&nbsp;passed&nbsp;to&nbsp;the&nbsp;constructor,&nbsp;so&nbsp;all&nbsp;parameters<br>
+&nbsp;&nbsp;assume&nbsp;their&nbsp;default&nbsp;values.&nbsp;&nbsp;For&nbsp;reference&nbsp;the&nbsp;defaults&nbsp;are<br>
+&nbsp;&nbsp;roughly:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RandomForestClassifier(<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n_estimators=100,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;number&nbsp;of&nbsp;decision&nbsp;trees<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;criterion='gini',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;impurity&nbsp;measure<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_depth=None,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;grow&nbsp;trees&nbsp;fully<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_samples_split=2,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;node&nbsp;split&nbsp;threshold<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_samples_leaf=1,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;leaf&nbsp;node&nbsp;size<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_features='auto',&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;features&nbsp;considered&nbsp;at&nbsp;each&nbsp;split<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bootstrap=True,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;bootstrap&nbsp;samples<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n_jobs=None,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;parallelism&nbsp;(uses&nbsp;all&nbsp;CPUs&nbsp;by&nbsp;default)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_state=None&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#&nbsp;reproducibility&nbsp;seed<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</tt></dd></dl>
+ <dl><dt><a name="-make_history"><strong>make_history</strong></a>(history, temp_folder)</dt><dd><tt>Persist&nbsp;a&nbsp;collection&nbsp;of&nbsp;data‑frames&nbsp;to&nbsp;an&nbsp;Excel&nbsp;workbook.<br>
+&nbsp;<br>
+The&nbsp;helper&nbsp;is&nbsp;used&nbsp;by&nbsp;the&nbsp;experiment&nbsp;framework&nbsp;to&nbsp;snapshot&nbsp;the<br>
+history&nbsp;of&nbsp;all&nbsp;runs&nbsp;(e.g.&nbsp;performance&nbsp;metrics,&nbsp;parameter<br>
+combinations,&nbsp;etc.)&nbsp;in&nbsp;a&nbsp;single&nbsp;Excel&nbsp;file&nbsp;that&nbsp;can&nbsp;later&nbsp;be<br>
+inspected&nbsp;manually&nbsp;or&nbsp;read&nbsp;back&nbsp;into&nbsp;Python.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+history&nbsp;:&nbsp;dict[str,&nbsp;pandas.DataFrame]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Mapping&nbsp;from&nbsp;a&nbsp;logical&nbsp;sheet&nbsp;name&nbsp;to&nbsp;a&nbsp;DataFrame&nbsp;that&nbsp;will&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;written&nbsp;to&nbsp;that&nbsp;sheet.&nbsp;&nbsp;The&nbsp;key&nbsp;string&nbsp;is&nbsp;used&nbsp;verbatim&nbsp;as&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Excel&nbsp;worksheet&nbsp;name.<br>
+temp_folder&nbsp;:&nbsp;str&nbsp;or&nbsp;pathlib.Path<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Directory&nbsp;where&nbsp;the&nbsp;temporary&nbsp;workbook&nbsp;should&nbsp;be&nbsp;created.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;function&nbsp;does&nbsp;not&nbsp;create&nbsp;the&nbsp;folder;&nbsp;it&nbsp;assumes&nbsp;that<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`temp_folder`&nbsp;already&nbsp;exists.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;function&nbsp;writes&nbsp;the&nbsp;file&nbsp;in&nbsp;place&nbsp;and&nbsp;closes&nbsp;the&nbsp;writer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;automatically.&nbsp;&nbsp;No&nbsp;object&nbsp;is&nbsp;returned.</tt></dd></dl>
+ <dl><dt><a name="-make_logo"><strong>make_logo</strong></a>(fasta_fn, png_fn, files=True)</dt><dd><tt>Generate&nbsp;a&nbsp;sequence&nbsp;logo&nbsp;image&nbsp;from&nbsp;a&nbsp;FASTA&nbsp;file&nbsp;and&nbsp;write&nbsp;it&nbsp;to&nbsp;disk.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+fasta_fn&nbsp;:&nbsp;str&nbsp;|&nbsp;file‑like<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;to&nbsp;a&nbsp;FASTA&nbsp;file&nbsp;or&nbsp;an&nbsp;already&nbsp;opened&nbsp;file&nbsp;object.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;If&nbsp;``files``&nbsp;is&nbsp;``False``&nbsp;the&nbsp;argument&nbsp;is&nbsp;expected&nbsp;to&nbsp;be&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;file‑like&nbsp;object&nbsp;(i.e.&nbsp;something&nbsp;that&nbsp;implements&nbsp;``read``).<br>
+png_fn&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;where&nbsp;the&nbsp;resulting&nbsp;PNG&nbsp;image&nbsp;will&nbsp;be&nbsp;written&nbsp;when<br>
+&nbsp;&nbsp;&nbsp;&nbsp;``files``&nbsp;is&nbsp;``True``.&nbsp;&nbsp;Ignored&nbsp;otherwise.<br>
+files&nbsp;:&nbsp;bool,&nbsp;optional<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``True``&nbsp;–&nbsp;treat&nbsp;``fasta_fn``&nbsp;as&nbsp;a&nbsp;filename&nbsp;and&nbsp;write&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PNG&nbsp;to&nbsp;``png_fn``.&nbsp;&nbsp;Return&nbsp;``None``.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``False``&nbsp;–&nbsp;treat&nbsp;``fasta_fn``&nbsp;as&nbsp;an&nbsp;open&nbsp;file‑like&nbsp;object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;return&nbsp;the&nbsp;PNG&nbsp;byte&nbsp;stream&nbsp;directly.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+None&nbsp;|&nbsp;bytes<br>
+&nbsp;&nbsp;&nbsp;&nbsp;``None``&nbsp;if&nbsp;the&nbsp;image&nbsp;was&nbsp;written&nbsp;to&nbsp;disk,&nbsp;otherwise&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;``bytes``&nbsp;object&nbsp;containing&nbsp;the&nbsp;PNG&nbsp;data.</tt></dd></dl>
+ <dl><dt><a name="-make_new_sheet"><strong>make_new_sheet</strong></a>(Ns, PAMs)</dt><dd><tt>Create&nbsp;a&nbsp;fresh&nbsp;experiment&nbsp;sheet&nbsp;(pandas&nbsp;DataFrame)&nbsp;from&nbsp;raw&nbsp;lists.<br>
+&nbsp;<br>
+In&nbsp;the&nbsp;context&nbsp;of&nbsp;the&nbsp;project&nbsp;each&nbsp;experiment&nbsp;is&nbsp;stored&nbsp;as&nbsp;a&nbsp;sheet<br>
+in&nbsp;an&nbsp;Excel&nbsp;workbook.&nbsp;&nbsp;A&nbsp;sheet&nbsp;contains&nbsp;three&nbsp;columns:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;``#``&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;–&nbsp;the&nbsp;sequence&nbsp;index&nbsp;(e.g.&nbsp;1,&nbsp;2,&nbsp;…)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;``PAM``&nbsp;&nbsp;&nbsp;&nbsp;–&nbsp;the&nbsp;nucleotide&nbsp;string&nbsp;that&nbsp;was&nbsp;tested<br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.&nbsp;``Outcome``&nbsp;–&nbsp;the&nbsp;experimental&nbsp;result&nbsp;(initially&nbsp;unknown)<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+Ns&nbsp;:&nbsp;array‑like<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Sequence&nbsp;numbers&nbsp;(typically&nbsp;0‑based&nbsp;or&nbsp;1‑based&nbsp;integers).<br>
+PAMs&nbsp;:&nbsp;array‑like<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Corresponding&nbsp;PAM&nbsp;strings&nbsp;of&nbsp;equal&nbsp;length&nbsp;to&nbsp;``Ns``.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+pandas.DataFrame<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;new&nbsp;dataframe&nbsp;that&nbsp;can&nbsp;be&nbsp;written&nbsp;as&nbsp;a&nbsp;new&nbsp;sheet&nbsp;in&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;historical&nbsp;results&nbsp;workbook.&nbsp;&nbsp;All&nbsp;entries&nbsp;in&nbsp;the&nbsp;``Outcome``<br>
+&nbsp;&nbsp;&nbsp;&nbsp;column&nbsp;are&nbsp;initialized&nbsp;to&nbsp;the&nbsp;empty&nbsp;string,&nbsp;signalling&nbsp;that<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;experiments&nbsp;have&nbsp;not&nbsp;yet&nbsp;been&nbsp;performed.</tt></dd></dl>
+ <dl><dt><a name="-onehot"><strong>onehot</strong></a>(u)</dt><dd><tt>Convert&nbsp;a&nbsp;sequence&nbsp;of&nbsp;nucleotides&nbsp;(or&nbsp;integer&nbsp;codes)&nbsp;into&nbsp;a<br>
+concatenated&nbsp;one‑hot&nbsp;encoding.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+u&nbsp;:&nbsp;iterable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;An&nbsp;iterable&nbsp;of&nbsp;characters&nbsp;or&nbsp;integer&nbsp;codes&nbsp;representing&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;DNA/RNA&nbsp;sequence.&nbsp;&nbsp;Accepted&nbsp;values&nbsp;are:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Integers&nbsp;0–4:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;→&nbsp;[0,&nbsp;0,&nbsp;0,&nbsp;0]&nbsp;&nbsp;&nbsp;(unknown&nbsp;/&nbsp;gap)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;→&nbsp;[1,&nbsp;0,&nbsp;0,&nbsp;0]&nbsp;&nbsp;&nbsp;(A)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;→&nbsp;[0,&nbsp;0,&nbsp;0,&nbsp;1]&nbsp;&nbsp;&nbsp;(T)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;→&nbsp;[0,&nbsp;1,&nbsp;0,&nbsp;0]&nbsp;&nbsp;&nbsp;(G)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;→&nbsp;[0,&nbsp;0,&nbsp;1,&nbsp;0]&nbsp;&nbsp;&nbsp;(C)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Single‑character&nbsp;strings,&nbsp;case‑insensitive:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'A','a'&nbsp;→&nbsp;[1,0,0,0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'T','t'&nbsp;→&nbsp;[0,0,0,1]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'G','g'&nbsp;→&nbsp;[0,1,0,0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'C','c'&nbsp;→&nbsp;[0,0,1,0]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'N','n'&nbsp;→&nbsp;[0,0,0,0]&nbsp;&nbsp;&nbsp;(ambiguous&nbsp;/&nbsp;unknown)<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Any&nbsp;value&nbsp;not&nbsp;in&nbsp;the&nbsp;table&nbsp;will&nbsp;raise&nbsp;a&nbsp;``KeyError``.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+numpy.ndarray<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;one‑dimensional&nbsp;NumPy&nbsp;array&nbsp;containing&nbsp;the&nbsp;flattened<br>
+&nbsp;&nbsp;&nbsp;&nbsp;one‑hot&nbsp;vectors&nbsp;for&nbsp;each&nbsp;element&nbsp;of&nbsp;u,&nbsp;concatenated&nbsp;in<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;original&nbsp;order.&nbsp;&nbsp;For&nbsp;a&nbsp;sequence&nbsp;of&nbsp;length&nbsp;L,&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;returned&nbsp;shape&nbsp;is&nbsp;``(L*4,)``;&nbsp;e.g.&nbsp;``['A','T']``&nbsp;→&nbsp;``[1,0,0,0,0,0,0,1]``.</tt></dd></dl>
+ <dl><dt><a name="-random_query_strategy"><strong>random_query_strategy</strong></a>(model, X, n_instances)</dt><dd><tt>Randomly&nbsp;select&nbsp;a&nbsp;batch&nbsp;of&nbsp;unlabeled&nbsp;instances&nbsp;for&nbsp;labeling.<br>
+&nbsp;<br>
+In&nbsp;an&nbsp;active‑learning&nbsp;pipeline&nbsp;the&nbsp;query&nbsp;strategy&nbsp;decides&nbsp;which<br>
+examples&nbsp;from&nbsp;the&nbsp;unlabeled&nbsp;pool&nbsp;should&nbsp;be&nbsp;sent&nbsp;to&nbsp;an&nbsp;oracle&nbsp;(e.g.<br>
+a&nbsp;lab&nbsp;experiment)&nbsp;next.&nbsp;&nbsp;This&nbsp;implementation&nbsp;simply&nbsp;samples<br>
+uniformly&nbsp;at&nbsp;random,&nbsp;which&nbsp;is&nbsp;useful&nbsp;as&nbsp;a&nbsp;baseline.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+model&nbsp;:&nbsp;object<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;trained&nbsp;classifier&nbsp;(unused&nbsp;in&nbsp;this&nbsp;strategy&nbsp;but&nbsp;kept&nbsp;for<br>
+&nbsp;&nbsp;&nbsp;&nbsp;API&nbsp;compatibility&nbsp;with&nbsp;more&nbsp;sophisticated&nbsp;strategies&nbsp;that<br>
+&nbsp;&nbsp;&nbsp;&nbsp;might&nbsp;inspect&nbsp;the&nbsp;model).<br>
+X&nbsp;:&nbsp;numpy.ndarray,&nbsp;shape&nbsp;(n_samples,&nbsp;n_features)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Feature&nbsp;matrix&nbsp;of&nbsp;the&nbsp;unlabeled&nbsp;instances.<br>
+n_instances&nbsp;:&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Number&nbsp;of&nbsp;examples&nbsp;to&nbsp;query&nbsp;in&nbsp;this&nbsp;batch.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+tuple<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``query_idx``&nbsp;:&nbsp;1‑D&nbsp;integer&nbsp;array&nbsp;of&nbsp;shape&nbsp;(n_instances,)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;containing&nbsp;the&nbsp;indices&nbsp;of&nbsp;the&nbsp;selected&nbsp;instances&nbsp;in&nbsp;``X``.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``X[query_idx]``&nbsp;:&nbsp;the&nbsp;corresponding&nbsp;feature&nbsp;vectors.</tt></dd></dl>
+ <dl><dt><a name="-runs_by_what"><strong>runs_by_what</strong></a>(fns, y_cols)</dt><dd><tt>Group&nbsp;a&nbsp;collection&nbsp;of&nbsp;function&nbsp;(or&nbsp;file)&nbsp;names&nbsp;by&nbsp;the&nbsp;target&nbsp;column&nbsp;they<br>
+refer&nbsp;to.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+fns&nbsp;:&nbsp;Iterable[str]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Iterable&nbsp;containing&nbsp;the&nbsp;names&nbsp;of&nbsp;the&nbsp;files&nbsp;to&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;inspected.<br>
+y_cols&nbsp;:&nbsp;Iterable[str]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Iterable&nbsp;of&nbsp;target&nbsp;column&nbsp;names&nbsp;(for&nbsp;example&nbsp;``["AUC",&nbsp;"TPR"]``).<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+dict[str,&nbsp;list[str]]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;mapping&nbsp;where&nbsp;the&nbsp;key&nbsp;is&nbsp;a&nbsp;column&nbsp;name&nbsp;from&nbsp;``y_cols``&nbsp;and&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;every&nbsp;entry&nbsp;in&nbsp;``fns``&nbsp;that&nbsp;contains&nbsp;that<br>
+&nbsp;&nbsp;&nbsp;&nbsp;column&nbsp;name&nbsp;somewhere&nbsp;in&nbsp;its&nbsp;string&nbsp;representation.</tt></dd></dl>
+ <dl><dt><a name="-save_fasta"><strong>save_fasta</strong></a>(fasta_fn, sequences)</dt><dd><tt>Write&nbsp;a&nbsp;list&nbsp;of&nbsp;sequences&nbsp;to&nbsp;a&nbsp;FASTA&nbsp;file.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+fasta_fn&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;(including&nbsp;filename)&nbsp;where&nbsp;the&nbsp;FASTA&nbsp;file&nbsp;should&nbsp;be&nbsp;written.<br>
+sequences&nbsp;:&nbsp;Iterable[str]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;list&nbsp;or&nbsp;other&nbsp;iterable&nbsp;of&nbsp;raw&nbsp;DNA/RNA/protein&nbsp;sequences.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Each&nbsp;element&nbsp;must&nbsp;be&nbsp;a&nbsp;string&nbsp;containing&nbsp;only&nbsp;the&nbsp;sequence<br>
+&nbsp;&nbsp;&nbsp;&nbsp;characters&nbsp;(e.g.&nbsp;"ACGT",&nbsp;"ATGCA").<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+None<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;function&nbsp;writes&nbsp;the&nbsp;file&nbsp;and&nbsp;closes&nbsp;the&nbsp;handle<br>
+&nbsp;&nbsp;&nbsp;&nbsp;without&nbsp;returning&nbsp;anything.</tt></dd></dl>
+ <dl><dt><a name="-toheno"><strong>toheno</strong></a>(u)</dt><dd><tt>Decode&nbsp;a&nbsp;flattened&nbsp;one‑hot&nbsp;array&nbsp;back&nbsp;into&nbsp;a&nbsp;nucleotide&nbsp;string.<br>
+&nbsp;<br>
+The&nbsp;project&nbsp;encodes&nbsp;the&nbsp;sequences&nbsp;as&nbsp;a&nbsp;1‑D&nbsp;array&nbsp;of&nbsp;length<br>
+``4&nbsp;*&nbsp;L``&nbsp;where&nbsp;each&nbsp;group&nbsp;of&nbsp;four&nbsp;consecutive&nbsp;elements&nbsp;represents<br>
+a&nbsp;single&nbsp;base&nbsp;in&nbsp;a&nbsp;one‑hot&nbsp;scheme.&nbsp;&nbsp;``toheno``&nbsp;reverses&nbsp;that&nbsp;process<br>
+and&nbsp;yields&nbsp;the&nbsp;corresponding&nbsp;string&nbsp;of&nbsp;bases.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+u&nbsp;:&nbsp;numpy.ndarray<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;1‑D&nbsp;NumPy&nbsp;array&nbsp;containing&nbsp;a&nbsp;concatenated&nbsp;one‑hot&nbsp;encoding.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;array&nbsp;must&nbsp;have&nbsp;a&nbsp;length&nbsp;that&nbsp;is&nbsp;a&nbsp;multiple&nbsp;of&nbsp;four.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Example&nbsp;shapes:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``(4*L,)``&nbsp;–&nbsp;a&nbsp;single&nbsp;sequence&nbsp;flattened&nbsp;into&nbsp;one&nbsp;dimension<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;``(n,)``&nbsp;&nbsp;&nbsp;–&nbsp;same&nbsp;as&nbsp;above;&nbsp;the&nbsp;function&nbsp;does&nbsp;not&nbsp;care&nbsp;how<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;array&nbsp;was&nbsp;produced,&nbsp;as&nbsp;long&nbsp;as&nbsp;it&nbsp;satisfies&nbsp;the&nbsp;shape<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;requirement.<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Each&nbsp;4‑element&nbsp;block&nbsp;must&nbsp;match&nbsp;one&nbsp;of&nbsp;the&nbsp;four&nbsp;canonical<br>
+&nbsp;&nbsp;&nbsp;&nbsp;encodings.&nbsp;&nbsp;If&nbsp;an&nbsp;element&nbsp;does&nbsp;not&nbsp;correspond&nbsp;to&nbsp;a&nbsp;known<br>
+&nbsp;&nbsp;&nbsp;&nbsp;base,&nbsp;a&nbsp;``KeyError``&nbsp;will&nbsp;be&nbsp;raised.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;decoded&nbsp;sequence,&nbsp;e.g.&nbsp;``array([1,0,0,0,&nbsp;0,0,0,1])``&nbsp;→<br>
+&nbsp;&nbsp;&nbsp;&nbsp;``"AT"``.</tt></dd></dl>
+ <dl><dt><a name="-train"><strong>train</strong></a>(X, Y, model_fun, query_fun, query_size, temp_folder)</dt><dd><tt>Train&nbsp;an&nbsp;Active&nbsp;Learner&nbsp;on&nbsp;a&nbsp;collection&nbsp;of&nbsp;data&nbsp;splits.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+X&nbsp;:&nbsp;dict[str,&nbsp;array-like]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;mapping&nbsp;from&nbsp;a&nbsp;chunk&nbsp;identifier&nbsp;to&nbsp;the&nbsp;input&nbsp;features.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Each&nbsp;entry&nbsp;must&nbsp;be&nbsp;a&nbsp;2‑D&nbsp;array&nbsp;(samples,&nbsp;features).&nbsp;&nbsp;The<br>
+&nbsp;&nbsp;&nbsp;&nbsp;special&nbsp;key&nbsp;``"1"``&nbsp;denotes&nbsp;the&nbsp;initial&nbsp;training&nbsp;set.<br>
+Y&nbsp;:&nbsp;dict[str,&nbsp;array-like]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Corresponding&nbsp;labels&nbsp;for&nbsp;the&nbsp;data&nbsp;in&nbsp;`X`.&nbsp;&nbsp;The&nbsp;shape&nbsp;of<br>
+&nbsp;&nbsp;&nbsp;&nbsp;`Y[key]`&nbsp;must&nbsp;match&nbsp;the&nbsp;number&nbsp;of&nbsp;rows&nbsp;in&nbsp;`X[key]`.<br>
+model_fun&nbsp;:&nbsp;callable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;no‑argument&nbsp;function&nbsp;that&nbsp;returns&nbsp;a&nbsp;fresh&nbsp;estimator<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(e.g.&nbsp;`lambda:&nbsp;RandomForestClassifier()`).<br>
+query_fun&nbsp;:&nbsp;callable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;query&nbsp;strategy&nbsp;function&nbsp;that&nbsp;takes&nbsp;a&nbsp;model&nbsp;and&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;training&nbsp;data&nbsp;and&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;indices&nbsp;of&nbsp;samples<br>
+&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;label.&nbsp;&nbsp;It&nbsp;must&nbsp;accept&nbsp;the&nbsp;keyword&nbsp;argument<br>
+&nbsp;&nbsp;&nbsp;&nbsp;``n_instances``&nbsp;to&nbsp;control&nbsp;how&nbsp;many&nbsp;instances&nbsp;to&nbsp;query.<br>
+query_size&nbsp;:&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;number&nbsp;of&nbsp;instances&nbsp;to&nbsp;request&nbsp;from&nbsp;the&nbsp;query&nbsp;strategy<br>
+&nbsp;&nbsp;&nbsp;&nbsp;during&nbsp;the&nbsp;initialisation&nbsp;phase.<br>
+temp_folder&nbsp;:&nbsp;str<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Path&nbsp;to&nbsp;a&nbsp;directory&nbsp;where&nbsp;intermediate&nbsp;pickles&nbsp;will&nbsp;be<br>
+&nbsp;&nbsp;&nbsp;&nbsp;written.&nbsp;&nbsp;The&nbsp;folder&nbsp;must&nbsp;exist&nbsp;and&nbsp;be&nbsp;writable.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+ActiveLearner<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;fully&nbsp;trained&nbsp;learner&nbsp;after&nbsp;all&nbsp;chunks&nbsp;have&nbsp;been<br>
+&nbsp;&nbsp;&nbsp;&nbsp;processed.&nbsp;&nbsp;The&nbsp;returned&nbsp;object&nbsp;is&nbsp;the&nbsp;same&nbsp;one&nbsp;that&nbsp;is<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pickled&nbsp;after&nbsp;each&nbsp;iteration.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>classic</strong> = &lt;weblogolib.colorscheme.ColorScheme object&gt;<br>
+<strong>default_color_schemes</strong> = {Alphabet( 'ACDEFGHIKLMNPQRSTVWY', zip('acdefghiklmnpqrstvwy', 'ACDEFGHIKLMNPQRSTVWY') ): &lt;weblogolib.colorscheme.ColorScheme object&gt;, Alphabet( 'ACGU', zip('acgu', 'ACGU') ): &lt;weblogolib.colorscheme.ColorScheme object&gt;, Alphabet( 'ACGT', zip('acgt', 'ACGT') ): &lt;weblogolib.colorscheme.ColorScheme object&gt;}<br>
+<strong>description</strong> = 'Create sequence logos from biological sequence alignments.'<br>
+<strong>formatters</strong> = {'eps': &lt;function eps_formatter&gt;, 'jpeg': &lt;function jpeg_formatter&gt;, 'logodata': &lt;function txt_formatter&gt;, 'pdf': &lt;function pdf_formatter&gt;, 'png': &lt;function png_formatter&gt;, 'png_print': &lt;function png_print_formatter&gt;, 'svg': &lt;function svg_formatter&gt;}<br>
+<strong>std_alphabets</strong> = {'dna': Alphabet( 'ACGT', zip('acgt', 'ACGT') ), 'protein': Alphabet( 'ACDEFGHIKLMNPQRSTVWY', zip('acdefghiklmnpqrstvwy', 'ACDEFGHIKLMNPQRSTVWY') ), 'rna': Alphabet( 'ACGU', zip('acgu', 'ACGU') )}<br>
+<strong>std_color_schemes</strong> = {'auto': None, 'base pairing': &lt;weblogolib.colorscheme.ColorScheme object&gt;, 'charge': &lt;weblogolib.colorscheme.ColorScheme object&gt;, 'chemistry': &lt;weblogolib.colorscheme.ColorScheme object&gt;, 'classic': &lt;weblogolib.colorscheme.ColorScheme object&gt;, 'hydrophobicity': &lt;weblogolib.colorscheme.ColorScheme object&gt;, 'monochrome': &lt;weblogolib.colorscheme.ColorScheme object&gt;}<br>
+<strong>std_percentCG</strong> = {'C. elegans': 36.0, 'D. melanogaster': 43.0, 'E. coli': 50.5, 'H. sapiens': 40.0, 'M. musculus': 42.0, 'S. cerevisiae': 38.0, 'T. thermophilus': 69.4}<br>
+<strong>std_sizes</strong> = {'large': 16.200000000000003, 'medium': 10.8, 'small': 5.4}<br>
+<strong>std_units</strong> = {'bits': 1.4426950408889634, 'digits': 0.43429448190325176, 'kJ/mol': 2.4789598268, 'kT': 1.0, 'kcal/mol': 0.59242405, 'nats': 1.0, 'probability': None}</td></tr></table>
+</body></html>

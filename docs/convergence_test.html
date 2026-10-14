@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module convergence_test</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>convergence_test</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/drlapki/Works/swiper/src/convergence_test.py">/home/drlapki/Works/swiper/src/convergence_test.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;file&nbsp;provides&nbsp;the&nbsp;code&nbsp;to&nbsp;compute&nbsp;statistical&nbsp;tests&nbsp;for&nbsp;active&nbsp;learning&nbsp;convergence.<br>
+This&nbsp;file&nbsp;is&nbsp;to&nbsp;be&nbsp;imported&nbsp;as&nbsp;a&nbsp;library&nbsp;and&nbsp;provides&nbsp;the&nbsp;following&nbsp;functions:<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;get_consensus:&nbsp;Converts&nbsp;a&nbsp;list&nbsp;of&nbsp;PAM&nbsp;sequences&nbsp;into&nbsp;a&nbsp;degenerate&nbsp;IUPAC&nbsp;consensus&nbsp;string&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;visualize&nbsp;the&nbsp;cleavage&nbsp;preference.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;consensus_score:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Computes&nbsp;a&nbsp;similarity&nbsp;score&nbsp;between&nbsp;a&nbsp;reference&nbsp;(real)&nbsp;PAM&nbsp;sequence&nbsp;and&nbsp;a<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;predicted&nbsp;degenerate&nbsp;consensus&nbsp;sequence.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lead_trail:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Splits&nbsp;the&nbsp;PAM&nbsp;candidate&nbsp;into&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;part.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;get_probs:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Computes&nbsp;probability&nbsp;distribution&nbsp;of&nbsp;a&nbsp;base&nbsp;selection&nbsp;over&nbsp;the&nbsp;alphabet&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;letters&nbsp;given&nbsp;the&nbsp;counts&nbsp;and&nbsp;the&nbsp;leading&nbsp;part&nbsp;of&nbsp;the&nbsp;PAM&nbsp;candidate.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;generate_H0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generate&nbsp;left&nbsp;samples&nbsp;from&nbsp;H0&nbsp;(the&nbsp;active&nbsp;learning&nbsp;did&nbsp;not&nbsp;converge)&nbsp;for&nbsp;the&nbsp;statistical&nbsp;test.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mutate:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Return&nbsp;s&nbsp;with&nbsp;randomly&nbsp;changed&nbsp;letters.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;make_rights:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generate&nbsp;right&nbsp;strings&nbsp;for&nbsp;H0&nbsp;sample.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;statistic:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Statistics&nbsp;according&nbsp;to&nbsp;the&nbsp;Eq.&nbsp;2&nbsp;from&nbsp;the&nbsp;paper.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;get_boundary:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compute&nbsp;boundary&nbsp;values&nbsp;for&nbsp;the&nbsp;given&nbsp;H0&nbsp;sample.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;compute_pvalue:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Compute&nbsp;p-value&nbsp;for&nbsp;a&nbsp;given&nbsp;statistics&nbsp;value.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;run_test:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Runs&nbsp;statistical&nbsp;test&nbsp;for&nbsp;given&nbsp;experimental&nbsp;history.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;plot_test_violins:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Violin&nbsp;plots&nbsp;for&nbsp;difference&nbsp;between&nbsp;experimental&nbsp;and&nbsp;H0&nbsp;samples.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="itertools.html">itertools</a><br>
+</td><td width="25%" valign=top><a href="Bio.motifs.html">Bio.motifs</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-compute_pvalue"><strong>compute_pvalue</strong></a>(stat, H0)</dt><dd><tt>Compute&nbsp;p-value&nbsp;for&nbsp;a&nbsp;given&nbsp;statistics&nbsp;value.</tt></dd></dl>
+ <dl><dt><a name="-consensus_score"><strong>consensus_score</strong></a>(real, predicted, n_value=0.1)</dt><dd><tt>Computes&nbsp;a&nbsp;similarity&nbsp;score&nbsp;between&nbsp;a&nbsp;reference&nbsp;(real)&nbsp;PAM&nbsp;sequence&nbsp;and&nbsp;a<br>
+predicted&nbsp;degenerate&nbsp;consensus&nbsp;sequence.<br>
+&nbsp;<br>
+The&nbsp;scoring&nbsp;is&nbsp;position‑wise&nbsp;and&nbsp;accounts&nbsp;for&nbsp;degenerate&nbsp;IUPAC&nbsp;bases:<br>
+-&nbsp;Positions&nbsp;where&nbsp;the&nbsp;reference&nbsp;is&nbsp;'N'&nbsp;(any&nbsp;base)&nbsp;are&nbsp;considered&nbsp;less&nbsp;informative<br>
+&nbsp;&nbsp;and&nbsp;are&nbsp;scored&nbsp;with&nbsp;a&nbsp;reduced&nbsp;weight&nbsp;(n_value)&nbsp;unless&nbsp;they&nbsp;occur&nbsp;at&nbsp;the<br>
+&nbsp;&nbsp;beginning&nbsp;of&nbsp;the&nbsp;sequence&nbsp;(left‑trailing&nbsp;Ns),&nbsp;which&nbsp;receive&nbsp;full&nbsp;score&nbsp;(1).<br>
+-&nbsp;Exact&nbsp;matches&nbsp;to&nbsp;non‑'N'&nbsp;bases&nbsp;yield&nbsp;a&nbsp;score&nbsp;of&nbsp;1.<br>
+-&nbsp;Mismatches&nbsp;yield&nbsp;0.<br>
+&nbsp;<br>
+This&nbsp;scoring&nbsp;scheme&nbsp;biases&nbsp;toward&nbsp;exact&nbsp;conservation&nbsp;of&nbsp;known&nbsp;specific&nbsp;bases,<br>
+while&nbsp;giving&nbsp;some&nbsp;credit&nbsp;for&nbsp;matches&nbsp;at&nbsp;positions&nbsp;that&nbsp;are&nbsp;known&nbsp;to&nbsp;be&nbsp;flexible<br>
+(N)&nbsp;in&nbsp;the&nbsp;reference.&nbsp;The&nbsp;trailing&nbsp;Ns&nbsp;after&nbsp;the&nbsp;first&nbsp;specific&nbsp;base&nbsp;are<br>
+down‑weighted&nbsp;because&nbsp;they&nbsp;represent&nbsp;less&nbsp;constrained&nbsp;positions.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;real&nbsp;(str):&nbsp;The&nbsp;reference/wild‑type&nbsp;PAM&nbsp;sequence&nbsp;(e.g.,&nbsp;"NGG").<br>
+&nbsp;&nbsp;&nbsp;&nbsp;predicted&nbsp;(str):&nbsp;The&nbsp;degenerate&nbsp;consensus&nbsp;sequence&nbsp;derived&nbsp;from&nbsp;cleavage&nbsp;data<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(e.g.,&nbsp;"RGG").<br>
+&nbsp;&nbsp;&nbsp;&nbsp;n_value&nbsp;(float,&nbsp;optional):&nbsp;Weight&nbsp;assigned&nbsp;to&nbsp;matches&nbsp;where&nbsp;the&nbsp;reference<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;base&nbsp;is&nbsp;'N'&nbsp;and&nbsp;the&nbsp;position&nbsp;is&nbsp;not&nbsp;left‑trailing.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Defaults&nbsp;to&nbsp;0.1.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;float:&nbsp;The&nbsp;cumulative&nbsp;similarity&nbsp;score.&nbsp;Higher&nbsp;values&nbsp;indicate&nbsp;closer<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;agreement&nbsp;with&nbsp;the&nbsp;reference,&nbsp;with&nbsp;a&nbsp;maximum&nbsp;possible&nbsp;score&nbsp;equal&nbsp;to<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;length&nbsp;of&nbsp;the&nbsp;sequence&nbsp;(if&nbsp;all&nbsp;positions&nbsp;match&nbsp;perfectly&nbsp;with<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight&nbsp;1).</tt></dd></dl>
+ <dl><dt><a name="-generate_H0"><strong>generate_H0</strong></a>(sample_size, alphabet, sequence_length=7, lags=[1, 2, 3, 4], seed=None)</dt><dd><tt>Generate&nbsp;left&nbsp;samples&nbsp;from&nbsp;H0&nbsp;(the&nbsp;active&nbsp;learning&nbsp;did&nbsp;not&nbsp;converge)&nbsp;for&nbsp;the&nbsp;statistical&nbsp;test.<br>
+&nbsp;<br>
+We&nbsp;generate&nbsp;“left-hand”&nbsp;strings&nbsp;by&nbsp;drawing&nbsp;random&nbsp;sequences&nbsp;from&nbsp;a&nbsp;fixed&nbsp;alphabet<br>
+(IUPAC&nbsp;nucleotides&nbsp;with&nbsp;no&nbsp;gaps)&nbsp;while&nbsp;deliberately&nbsp;inserting&nbsp;a&nbsp;random&nbsp;number&nbsp;of<br>
+ambiguous&nbsp;nucleotides&nbsp;(‘N’s)&nbsp;at&nbsp;the&nbsp;terminus&nbsp;(to&nbsp;simulate&nbsp;the&nbsp;trailing&nbsp;part&nbsp;of&nbsp;PAM).<br>
+By&nbsp;sampling&nbsp;the&nbsp;trailing&nbsp;part&nbsp;size&nbsp;uniformly&nbsp;from&nbsp;the&nbsp;provided&nbsp;set&nbsp;of&nbsp;lengths,&nbsp;we<br>
+emulate&nbsp;the&nbsp;diversity&nbsp;of&nbsp;possible&nbsp;PAM&nbsp;sequences.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sample_size(int):&nbsp;number&nbsp;of&nbsp;generated&nbsp;left&nbsp;strings<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alphabet(str):&nbsp;the&nbsp;degenerate&nbsp;IUPAC&nbsp;alphabet&nbsp;for&nbsp;nucleotides<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sequence_length(int):&nbsp;the&nbsp;length&nbsp;of&nbsp;each&nbsp;PAM&nbsp;candidate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lags([int]):&nbsp;the&nbsp;sizes&nbsp;of&nbsp;random&nbsp;trailing&nbsp;part<br>
+&nbsp;&nbsp;&nbsp;&nbsp;seed(int):&nbsp;the&nbsp;random&nbsp;number&nbsp;generator&nbsp;seed<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;numpy.ndarray&nbsp;of&nbsp;strings:&nbsp;the&nbsp;generated&nbsp;sample&nbsp;of&nbsp;length&nbsp;sample_size</tt></dd></dl>
+ <dl><dt><a name="-get_boundary"><strong>get_boundary</strong></a>(history_H0, n_comparisons, pval_threshold=0.05)</dt><dd><tt>Compute&nbsp;boundary&nbsp;values&nbsp;for&nbsp;the&nbsp;given&nbsp;H0&nbsp;sample.</tt></dd></dl>
+ <dl><dt><a name="-get_consensus"><strong>get_consensus</strong></a>(l)</dt><dd><tt>Converts&nbsp;a&nbsp;list&nbsp;of&nbsp;PAM&nbsp;sequences&nbsp;into&nbsp;a&nbsp;degenerate&nbsp;IUPAC&nbsp;consensus&nbsp;string&nbsp;<br>
+to&nbsp;visualize&nbsp;the&nbsp;cleavage&nbsp;preference.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;l&nbsp;(list&nbsp;of&nbsp;str):&nbsp;List&nbsp;of&nbsp;DNA&nbsp;sequences&nbsp;(the&nbsp;"cleaved"&nbsp;PAMs&nbsp;from&nbsp;the&nbsp;screen).<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;Degenerate&nbsp;consensus&nbsp;sequence&nbsp;(e.g.,&nbsp;"NGG").</tt></dd></dl>
+ <dl><dt><a name="-get_probs"><strong>get_probs</strong></a>(alphabet_letters, letter_counts, leading_part)</dt><dd><tt>Computes&nbsp;probability&nbsp;distribution&nbsp;of&nbsp;a&nbsp;base&nbsp;selection&nbsp;over&nbsp;the&nbsp;alphabet&nbsp;<br>
+letters&nbsp;given&nbsp;the&nbsp;counts&nbsp;and&nbsp;the&nbsp;leading&nbsp;part&nbsp;of&nbsp;the&nbsp;PAM&nbsp;candidate.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alphabet_letters(Iterable):&nbsp;the&nbsp;letters&nbsp;in&nbsp;the&nbsp;alphabet<br>
+&nbsp;&nbsp;&nbsp;&nbsp;letter_counts([int]):&nbsp;counts&nbsp;of&nbsp;each&nbsp;letter&nbsp;in&nbsp;the&nbsp;template<br>
+&nbsp;&nbsp;&nbsp;&nbsp;leading&nbsp;part(string):&nbsp;the&nbsp;leading&nbsp;part&nbsp;of&nbsp;the&nbsp;PAM&nbsp;candidate<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;[float]:&nbsp;probabilities&nbsp;to&nbsp;be&nbsp;picked&nbsp;for&nbsp;each&nbsp;letter</tt></dd></dl>
+ <dl><dt><a name="-lead_trail"><strong>lead_trail</strong></a>(template)</dt><dd><tt>Splits&nbsp;the&nbsp;PAM&nbsp;candidate&nbsp;into&nbsp;leading&nbsp;and&nbsp;trailing&nbsp;part.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;template&nbsp;(string):&nbsp;PAM&nbsp;candidate&nbsp;to&nbsp;split<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(leading_part,&nbsp;trailing_part)&nbsp;(Tuple&nbsp;of&nbsp;strings):&nbsp;leading&nbsp;part&nbsp;and&nbsp;the&nbsp;Ns&nbsp;at&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;PAM</tt></dd></dl>
+ <dl><dt><a name="-make_rights"><strong>make_rights</strong></a>(lefts, alphabet)</dt><dd><tt>Generate&nbsp;right&nbsp;strings&nbsp;for&nbsp;H0&nbsp;sample.<br>
+&nbsp;<br>
+The&nbsp;“right-hand”&nbsp;strings&nbsp;are&nbsp;generated&nbsp;by&nbsp;replacing&nbsp;a&nbsp;randomly&nbsp;chosen&nbsp;subset&nbsp;<br>
+of&nbsp;characters&nbsp;with&nbsp;alternative&nbsp;symbols&nbsp;from&nbsp;the&nbsp;same&nbsp;alphabet.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;lefts&nbsp;(Iterable&nbsp;of&nbsp;str):&nbsp;Input&nbsp;left&nbsp;strings<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alphabet&nbsp;(str):&nbsp;String&nbsp;containing&nbsp;allowed&nbsp;letters<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;numpy.ndarray:&nbsp;Array&nbsp;of&nbsp;mutated&nbsp;right&nbsp;strings&nbsp;with&nbsp;random&nbsp;changes</tt></dd></dl>
+ <dl><dt><a name="-mutate"><strong>mutate</strong></a>(s, alphabet)</dt><dd><tt>Return&nbsp;s&nbsp;with&nbsp;randomly&nbsp;changed&nbsp;letters.<br>
+&nbsp;<br>
+The&nbsp;selected&nbsp;positions&nbsp;are&nbsp;sampled&nbsp;without&nbsp;replacement&nbsp;to&nbsp;avoid&nbsp;repeated&nbsp;changes&nbsp;at&nbsp;the&nbsp;same&nbsp;site,&nbsp;<br>
+ensuring&nbsp;that&nbsp;each&nbsp;mutation&nbsp;event&nbsp;modifies&nbsp;distinct&nbsp;locus.&nbsp;For&nbsp;each&nbsp;chosen&nbsp;position,&nbsp;the&nbsp;function<br>
+constructs&nbsp;a&nbsp;list&nbsp;of&nbsp;alternative&nbsp;characters&nbsp;that&nbsp;excludes&nbsp;the&nbsp;current&nbsp;base,&nbsp;making&nbsp;sure<br>
+that&nbsp;a&nbsp;genuine&nbsp;change&nbsp;occurs.&nbsp;<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;s&nbsp;(str):&nbsp;Input&nbsp;string<br>
+&nbsp;&nbsp;&nbsp;&nbsp;alphabet&nbsp;(str):&nbsp;String&nbsp;containing&nbsp;allowed&nbsp;letters<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;Mutated&nbsp;string&nbsp;with&nbsp;random&nbsp;changes</tt></dd></dl>
+ <dl><dt><a name="-plot_test_violins"><strong>plot_test_violins</strong></a>(history, history_stat, history_H0, boundaries, ax, pval, location, rotation)</dt><dd><tt>Violin&nbsp;plots&nbsp;for&nbsp;difference&nbsp;between&nbsp;experimental&nbsp;and&nbsp;H0&nbsp;samples.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;history([pd.DataFrame]):&nbsp;experimental&nbsp;history&nbsp;for&nbsp;an&nbsp;ortholog.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;history_stat(np.array(float)):&nbsp;statistics&nbsp;computed&nbsp;over&nbsp;experimental&nbsp;sample.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;history_H0(np.array(float)):&nbsp;statistics&nbsp;computed&nbsp;over&nbsp;H0&nbsp;sample.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;boundary_values(np.array(float)):&nbsp;boundary&nbsp;values&nbsp;for&nbsp;the&nbsp;tests.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ax(plt.Axis):&nbsp;Matplotlib&nbsp;axis.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pval(float):&nbsp;p-value&nbsp;threshold.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;location(str):&nbsp;legend&nbsp;location&nbsp;on&nbsp;the&nbsp;plot.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rotation(float):&nbsp;rotation&nbsp;of&nbsp;tick&nbsp;labels.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;None</tt></dd></dl>
+ <dl><dt><a name="-run_test"><strong>run_test</strong></a>(history, LR, statistic_f, pval_threshold=0.05)</dt><dd><tt>Runs&nbsp;statistical&nbsp;test&nbsp;for&nbsp;given&nbsp;experimental&nbsp;history.<br>
+&nbsp;<br>
+The&nbsp;test&nbsp;quantifies&nbsp;the&nbsp;similarity&nbsp;between&nbsp;two&nbsp;motifs&nbsp;adjusted&nbsp;by&nbsp;the&nbsp;quality&nbsp;of&nbsp;motif&nbsp;extraction,&nbsp;<br>
+and&nbsp;the&nbsp;p-value&nbsp;is&nbsp;computed&nbsp;with&nbsp;Monte&nbsp;Carlo&nbsp;simulation&nbsp;by&nbsp;estimation&nbsp;of&nbsp;probability&nbsp;for&nbsp;a&nbsp;random&nbsp;pair&nbsp;of&nbsp;PAM&nbsp;candidates&nbsp;<br>
+having&nbsp;the&nbsp;same&nbsp;or&nbsp;more&nbsp;extreme&nbsp;concordance&nbsp;under&nbsp;the&nbsp;null&nbsp;hypothesis&nbsp;that&nbsp;no&nbsp;true&nbsp;convergence&nbsp;has&nbsp;occurred.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;history([pd.DataFrame]):&nbsp;experimental&nbsp;history&nbsp;for&nbsp;an&nbsp;ortholog.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;LR(([str],&nbsp;[str]):&nbsp;lefts&nbsp;and&nbsp;rights&nbsp;sampled&nbsp;from&nbsp;H0.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;statistics_f((str,&nbsp;str)&nbsp;-&gt;&nbsp;float):&nbsp;function&nbsp;to&nbsp;compute&nbsp;statistics.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;pval_threshold(float):&nbsp;significance&nbsp;threshold.<br>
+Returns<br>
+------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;history_stat(np.array(float)):&nbsp;statistics&nbsp;computed&nbsp;over&nbsp;experimental&nbsp;sample.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;history_H0(np.array(float)):&nbsp;statistics&nbsp;computed&nbsp;over&nbsp;H0&nbsp;sample.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;boundary_values(np.array(float)):&nbsp;boundary&nbsp;values&nbsp;for&nbsp;the&nbsp;tests.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sig_test(np.array(bool)):&nbsp;results&nbsp;of&nbsp;significance&nbsp;tests.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;significants(np.array((str,&nbsp;str))):&nbsp;only&nbsp;statistically&nbsp;significant&nbsp;pairs</tt></dd></dl>
+ <dl><dt><a name="-statistic"><strong>statistic</strong></a>(left, right)</dt><dd><tt>Statistics&nbsp;according&nbsp;to&nbsp;the&nbsp;Eq.&nbsp;2&nbsp;from&nbsp;the&nbsp;paper.<br>
+&nbsp;<br>
+1.&nbsp;We&nbsp;compute&nbsp;consensus&nbsp;with&nbsp;each&nbsp;other,&nbsp;but,&nbsp;since&nbsp;vanilla&nbsp;consensus&nbsp;scores&nbsp;often&nbsp;lead&nbsp;to&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;premature&nbsp;termination&nbsp;at&nbsp;suboptimal&nbsp;results:<br>
+2.&nbsp;We&nbsp;divide&nbsp;consensus&nbsp;scores&nbsp;by&nbsp;the&nbsp;leading&nbsp;part&nbsp;length&nbsp;to&nbsp;navigate&nbsp;past&nbsp;local&nbsp;maxima&nbsp;and:<br>
+3.&nbsp;We&nbsp;penalize&nbsp;convergence&nbsp;if&nbsp;the&nbsp;leading&nbsp;part&nbsp;is&nbsp;too&nbsp;short&nbsp;(shorter&nbsp;than&nbsp;two&nbsp;nucleotides).<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;left&nbsp;(str):&nbsp;left&nbsp;string&nbsp;from&nbsp;the&nbsp;pair&nbsp;(n-th&nbsp;experiment).<br>
+&nbsp;&nbsp;&nbsp;&nbsp;right&nbsp;(str):&nbsp;right&nbsp;string&nbsp;from&nbsp;the&nbsp;pair&nbsp;(n+1-th&nbsp;experiment).<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;float:&nbsp;value&nbsp;of&nbsp;the&nbsp;statistic.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>IUPAC_DNA_no_gap</strong> = 'ACGTRYSWKMBDHVN'</td></tr></table>
+</body></html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module learning_curve</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>learning_curve</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/drlapki/Works/swiper/src/learning_curve.py">/home/drlapki/Works/swiper/src/learning_curve.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;file&nbsp;provides&nbsp;the&nbsp;code&nbsp;to&nbsp;run&nbsp;training&nbsp;for&nbsp;learning&nbsp;curves.<br>
+This&nbsp;file&nbsp;is&nbsp;to&nbsp;be&nbsp;ran&nbsp;as&nbsp;a&nbsp;standalone&nbsp;script.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+<a href="json.html">json</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="posixpath.html">posixpath</a><br>
+<a href="os.html">os</a><br>
+<a href="pandas.html">pandas</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="swiper_cli.html">swiper_cli</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-train_model"><strong>train_model</strong></a>(df, y_column, train_ix, test_ix, length=6)</dt><dd><tt>Trains&nbsp;a&nbsp;Random&nbsp;Forest&nbsp;model&nbsp;on&nbsp;the&nbsp;provided&nbsp;DataFrame&nbsp;and&nbsp;calculates&nbsp;evaluation&nbsp;metrics.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;prepares&nbsp;the&nbsp;training&nbsp;and&nbsp;test&nbsp;sets,&nbsp;fits&nbsp;the&nbsp;Random&nbsp;Forest&nbsp;model,&nbsp;<br>
+and&nbsp;computes&nbsp;classification&nbsp;metrics.<br>
+&nbsp;<br>
+Parameters<br>
+----------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;df&nbsp;(pandas.DataFrame):&nbsp;The&nbsp;input&nbsp;DataFrame.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;y_column&nbsp;(str):&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;target&nbsp;column.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;train_ix&nbsp;(np.array(int)):&nbsp;indices&nbsp;of&nbsp;training&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;test_ix&nbsp;(np.array(int)):&nbsp;indices&nbsp;of&nbsp;test&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;length&nbsp;(int,&nbsp;optional):&nbsp;Length&nbsp;of&nbsp;the&nbsp;sequences&nbsp;(e.g.,&nbsp;6).&nbsp;Defaults&nbsp;to&nbsp;6.<br>
+&nbsp;<br>
+Returns<br>
+-------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tuple:&nbsp;A&nbsp;tuple&nbsp;containing:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;y_hat&nbsp;(numpy.ndarray):&nbsp;Predicted&nbsp;labels&nbsp;for&nbsp;the&nbsp;test&nbsp;set.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;metrics&nbsp;(list):&nbsp;A&nbsp;list&nbsp;of&nbsp;calculated&nbsp;metrics:&nbsp;accuracy,&nbsp;balanced&nbsp;accuracy,&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;Matthews&nbsp;correlation&nbsp;coefficient.</tt></dd></dl>
+</td></tr></table>
+</body></html>
