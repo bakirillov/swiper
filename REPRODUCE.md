@@ -3,7 +3,7 @@
 
 ## Golden set generation and data preparation
 
-1. Run 1.SF1.ipynb;
+1. Run 1.EDF1.ipynb;
 2. Run 2.DataPreparation.ipynb;
 3. Run F1/Figure1.ipynb;
 
@@ -27,8 +27,8 @@
 5. Run ../scripts/F2_gather_results.sh;
 6. Run 3.ResultPreparation_F2bc.ipynb;
 7. Run 4.ResultPreparation_F2adef.ipynb;
-8. Run 5.F2_T1_SF2_SF3_SF4.ipynb;
-9. Run 6.SN1;
+8. Run 5.F2_T1_EDF2_EDF3_EDF4.ipynb;
+9. Run 6.EDF6_EDF7_EDF8_EDF9_EDT1;
 
 
 ## Experimental study (Figure 3 and 4, Supplementary Figures 2, 3, 4, 5, Table 1)
@@ -66,4 +66,4 @@ For this part, we've run swiper_cli.py by hand for all experimental xlsx files. 
 29. python ../src/swiper_cli.py -d ../data/external/2025_11_12_PpCas9_set_10_results.xlsx -s 2024 -q 18 -a -o "PpCas9_final" -p None
 30. python ../src/swiper_cli.py -d ../data/external/2025_11_25_AlkaCas9_set_10_results.xlsx -s 2024 -q 18 -a -o "AlkaCas9_final" -p None
 
-Then unpack each archive in the corresponding directory PROTEIN_NAME/RUN_NUMBER (e.g. AlkaCas9/3), but 10-th run should be renamed to "final". After that, run 7.F3_F4_SF5.ipynb.
+Then unpack each archive in the corresponding directory PROTEIN_NAME/RUN_NUMBER (e.g. AlkaCas9/3), but 10-th run should be renamed to "final". After that, run 7.F3_F4_EDF5.ipynb.
