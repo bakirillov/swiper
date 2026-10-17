@@ -402,7 +402,7 @@ def plot_test_violins(history, history_stat, history_H0, boundaries, ax, pval, l
                marker="x", linewidth=2, label=f"Observed stat" if i == 0 else None)
         ax.scatter(pos, bnd, color="snow", s=50, zorder=3, 
                marker=".", linewidth=2, label=f"Boundary value at p="+str(pval) if i == 0 else None)
-    ax.set_xlabel("Gel Pair Index")
+    ax.set_xlabel("Consensus Pair Index")
     ax.set_ylabel("Statistic Value")
     #ax.set_title("Statistical test for convergence of active learning-derived PAM consensus")
     ax.set_xticks(positions)
