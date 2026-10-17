@@ -22,6 +22,28 @@ except ImportError:
     import convergence_test as convergence
 
 
+HEADER_TEMPLATE = """
+
+# EXPERIMENT_NAME
+
+"""
+    
+ITER_TEMPLATE = """
+
+## ITERNUMBER-th iteration
+
+Predicted PAM consensus: consensus_string      
+
+![Predicted PAM logo at ITERNUMBER-th iteration](consensus_logo)       
+
+"""
+
+CONVERGENCE_TEMPLATE = """
+## Statistical test for convergence of PAM search
+
+![CONVERGENCE](convergence_violin)     
+"""
+    
 
 
 class Output():
@@ -30,14 +52,13 @@ class Output():
 
     Parameters
     ----------
-    tmplt (str): Path to the template file.
     name (str): Name of the experiment.
-    left (list): List containing left consensus string and logo.
+    consensi (list): List containing consensus strings and logos.
     right (list, optional): List containing right consensus string and logo. Defaults to None.
     convergence (list, optional): List containing convergence details. Defaults to None.
     """
     
-    def __init__(self, tmplt, name, left, right=None, convergence=None):
+    def __init__(self, name, consensi, convergence=None):
         """
         Initializes the Output instance.
 
@@ -46,28 +67,26 @@ class Output():
 
         Parameters
         ----------
-        tmplt (str): Path to the template file.
         name (str): Name of the experiment.
-        left (list): List containing left consensus string and logo.
+        consensi (list): List containing consensus strings and logos.
         right (list, optional): List containing right consensus string and logo. Defaults to None.
         convergence (list, optional): List containing convergence details. Defaults to None.
         """
-        with open(tmplt, "r") as ih:
-            tmplt_ = ih.read()
-        self.NAME, self.LEFT, self.RIGHT, self.CONV = tmplt_.split("---")
-        self.output = []
-        self.NAME = self.NAME.replace("EXPERIMENT_NAME", name)
-        self.LEFT = self.LEFT.replace("left_consensus_string", left[0])
-        self.LEFT = self.LEFT.replace("left_logo", left[1])
-        self.output.extend([self.NAME, self.LEFT])
-        if right and convergence:
-            self.RIGHT = self.RIGHT.replace("right_consensus_string", right[0])
-            self.RIGHT = self.RIGHT.replace("right_logo", right[1])
-            self.CONV = self.CONV.replace("left_consensus_string", left[0])
-            self.CONV = self.CONV.replace("right_consensus_string", right[0])
-            self.CONV = self.CONV.replace("PVALUE", convergence[0])
-            self.CONV = self.CONV.replace("convergence_violin", convergence[1])
-            self.output.extend([self.RIGHT, self.CONV])
+        self.OUTPUT = [
+            HEADER_TEMPLATE.replace("EXPERIMENT_NAME", name)
+        ]
+        for i,(consensus, logo) in enumerate(consensi):
+            self.OUTPUT.append(
+                ITER_TEMPLATE.replace("consensus_string", consensus).replace(
+                    "ITERNUMBER", str(i+1)
+                ).replace(
+                    "consensus_logo", logo
+                )
+            )
+        if convergence:
+            self.OUTPUT.append(
+                CONVERGENCE_TEMPLATE.replace("convergence_violin", convergence[1])
+            )
         
     def out(self):
         """
@@ -76,7 +95,7 @@ class Output():
         Returns:
             str: The formatted string.
         """
-        return("---".join(self.output))
+        return("\n\n".join(self.OUTPUT))
 
 
 class ModelResult():
@@ -260,16 +279,10 @@ if __name__ == '__main__':
         help="The output filename"
     )
     parser.add_argument(
-        "--left",
+        "--experiments",
         type=str,
         required=True,
-        help="The left consensus identifier"
-    )
-    parser.add_argument(
-        "--right",
-        type=str,
-        default="None",
-        help="The right consensus identifier (optional)"
+        help="exp1.zip;exp2.zip;exp3.zip"
     )
     parser.add_argument(
         "--size",
@@ -295,17 +308,18 @@ if __name__ == '__main__':
     np.random.seed(args.seed)
     rnd = "".join(np.random.choice(np.arange(10), size=10).astype(str))
     TMP = "/tmp/swiper_"+rnd
-    left_consensus = get_consensus(TMP, SIZE, N_VALUE, "left", args.left)
-    left = (left_consensus, TMP+"/left.logo.png")
-    right = None
+    experiments = args.experiments.split(",")
+    consensi = []
+    for i,experiment in enumerate(experiments):
+        current_consensus = get_consensus(TMP, SIZE, N_VALUE, str(i+1), experiment)
+        current = (current_consensus, TMP+"/"+str(i+1)+".logo.png")
+        consensi.append(current)
     convergence_ = None
-    if args.right != "None":
-        right_consensus = get_consensus(TMP, SIZE, N_VALUE, "right", args.right)
-        right = (right_consensus, TMP+"/right.logo.png")
-        pval = get_convergence(TMP, np.array([left_consensus, right_consensus]).reshape(-1,1))
+    if len(consensi) > 1:
+        pval = get_convergence(TMP, np.array([a[0] for a in consensi]).reshape(-1,1))
         convergence_ = (str(pval), TMP+"/convergence.png")
     o = Output(
-        "TEMPLATE.md", args.name, left, right, convergence_
+        args.name, consensi, convergence_
     )
     o_md = o.out()
     output_fn = args.output
