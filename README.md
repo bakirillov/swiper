@@ -42,7 +42,16 @@ python ./src/swiper_cli.py -d YOURFILE.xlsx -p "./supplementary/Supplementary Da
 ```
 This will add list '2' to the original file with the next round sequences and save the model to OUTPUT_MODEL_ARCHIVE_1.zip. 
 
-Perform cleavage assay and fill list '2' with the outcomes.  
+Perform cleavage assay and fill list '2' with the outcomes.  Repeat until convergence.
+
+To visualize the results and identify convergence, run the following:
+
+```bash
+
+python swiper_vis.py --name YOUR_EXPERIMENT_NAME --output REPORT_NAME --experiments OUTPUT_MODEL_ARCHIVE_1.zip,OUTPUT_MODEL_ARCHIVE_2.zip,OUTPUT_MODEL_ARCHIVE_3.zip...and so on
+```
+
+This will create file REPORT_NAME.pdf
 
 
 ---
