@@ -65,3 +65,8 @@ If p-value for a pair is below your preferred threshold (e.g. 0.05), you can saf
 ### Reproduction instructions
 
 To reproduce all the figures and tables from the paper, read and follow REPRODUCE.md.
+
+---
+### Data availability
+
+Uncropped gel images are available at Zenodo (https://zenodo.org/records/23460858). The rest is available here (./data and ./supplementary).
