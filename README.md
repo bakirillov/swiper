@@ -10,7 +10,8 @@ The Monte-Carlo statistical test shows when the consensus is stable and the sear
 ---
 ### Quickstart
 
-`bash
+```bash
 
 git clone https://github.com/bakirillov/swiper.git
 cd swiper
+```
