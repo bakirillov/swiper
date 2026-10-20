@@ -88,7 +88,7 @@ samples = sample_from_consensus(consensus, n=9) + random_seqs
 Order synthesis and perform cleavage assay, fill the Excel file as described above. From that point on, follow the "Quick start" instruction.
 
 ---
-### Citation
+### Citation COMING SOON
 
 If you use Swiper, please cite:
 
