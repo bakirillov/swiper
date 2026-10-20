@@ -67,3 +67,7 @@ For this part, we've run swiper_cli.py by hand for all experimental xlsx files. 
 30. python ../src/swiper_cli.py -d ../data/external/2025_11_25_AlkaCas9_set_10_results.xlsx -s 2024 -q 18 -a -o "AlkaCas9_final" -p None -t /tmp/swiper_workdir/
 
 Then unpack each archive in the corresponding directory PROTEIN_NAME/RUN_NUMBER (e.g. AlkaCas9/3), but 10-th run should be renamed to "final". After that, run 7.F3_F4_EDF9.ipynb.
+
+## Visualizations for the README.md
+
+1. cd scripts && bash ./visualization_test.sh
