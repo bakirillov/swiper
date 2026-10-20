@@ -81,6 +81,9 @@ target/
 data/interim/
 data/raw/
 
+# exclude the paper
+paper/
+
 # Mac OS-specific storage files
 .DS_Store
 
