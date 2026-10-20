@@ -64,4 +64,4 @@ If p-value for a pair is below your preferred threshold (e.g. 0.05), you can saf
 ---
 ### Reproduction instructions
 
-Read and follow REPRODUCE.md.
+To reproduce all the figures and tables from the paper, read and follow REPRODUCE.md.
