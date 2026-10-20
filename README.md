@@ -59,7 +59,7 @@ If there is more than one archive, the script tests for convergence via the Mont
 <img src="CONVERGENCE.png" alt="conv">
 
 
-If p-value for a pair is below your preferred threshold (e.g. 0.05), you can safely say "Swiper, no swiping!" and conclude with the experiments. The resulting PAM is given by the final attempt.
+If p-value for a pair is below your preferred threshold (e.g. 0.05), you can safely say "Swiper, no swiping!" and stop the experiments. The resulting PAM is given by the final attempt.
 
 ---
 ### Reproduction instructions
