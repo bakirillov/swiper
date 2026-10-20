@@ -40,7 +40,7 @@ python ./src/swiper_cli.py -d YOURFILE.xlsx -p "./supplementary/Supplementary Da
 ```
 This will add list '2' to the original file with the next round sequences and save the model to OUTPUT_MODEL_ARCHIVE_1.zip. 
 
-Perform cleavage assay and fill list '2' with the outcomes. Save new model in a different output archive. Repeat until convergence.
+Order DNA synthesis. Perform cleavage assay and fill list '2' with the outcomes. Save new model in a different output archive. Repeat until convergence.
 
 To visualize the results and identify convergence, run the following:
 
