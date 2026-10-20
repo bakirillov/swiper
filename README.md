@@ -95,3 +95,8 @@ To reproduce all the figures and tables from the paper, read and follow REPRODUC
 ### Data availability
 
 Uncropped gel images are available at Zenodo (https://zenodo.org/records/23460858). The rest is available here (./data and ./supplementary).
+
+---
+### Contributing
+
+Issues and pull requests are welcome. For questions about the method, open an issue or contact the corresponding author.
