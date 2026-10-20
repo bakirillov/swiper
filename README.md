@@ -8,8 +8,6 @@
 ---
 Swiper identifies the protospacer-adjacent motif (PAM) of an uncharacterized Cas9 ortholog from a small number of iterative cleavage assays guided by Active Machine Learning.
 
-The Monte-Carlo statistical test shows when the consensus is stable and the search can be completed: Swiper, no swiping!
-
 ---
 ### Quick start
 
@@ -42,7 +40,7 @@ python ./src/swiper_cli.py -d YOURFILE.xlsx -p "./supplementary/Supplementary Da
 ```
 This will add list '2' to the original file with the next round sequences and save the model to OUTPUT_MODEL_ARCHIVE_1.zip. 
 
-Perform cleavage assay and fill list '2' with the outcomes.  Repeat until convergence.
+Perform cleavage assay and fill list '2' with the outcomes. Save new model in a different output archive. Repeat until convergence.
 
 To visualize the results and identify convergence, run the following:
 
@@ -51,8 +49,17 @@ To visualize the results and identify convergence, run the following:
 python swiper_vis.py --name YOUR_EXPERIMENT_NAME --output REPORT_NAME --experiments OUTPUT_MODEL_ARCHIVE_1.zip,OUTPUT_MODEL_ARCHIVE_2.zip,OUTPUT_MODEL_ARCHIVE_3.zip...and so on
 ```
 
-This will create file REPORT_NAME.pdf
+This will create file REPORT_NAME.pdf with the following information (to reproduce, run scripts/visualization_test.sh):
 
+<img src="PAM.png" alt="pams">
+
+For each attempt, the report shows a logo sequence and a consensus. 
+
+If there is more than one archive, the script tests for convergence via the Monte-Carlo nonparametric statistical test:
+<img src="CONVERGENCE.png" alt="conv">
+
+
+If p-value for a pair is below your preferred threshold (e.g. 0.05), you can safely say "Swiper, no swiping!" and conclude with the experiments. The resulting PAM is given by the final attempt.
 
 ---
 ### Reproduction instructions
