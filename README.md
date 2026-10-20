@@ -100,7 +100,8 @@ If you use Swiper, please cite:
   journal = {<journal>},
   year    = {<year>},
   doi     = {<doi>}
-}```
+}
+```
 
 ---
 ### Reproduction instructions
