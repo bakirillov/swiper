@@ -51,7 +51,7 @@ python swiper_vis.py --name YOUR_EXPERIMENT_NAME --output REPORT_NAME --experime
 
 This will create file REPORT_NAME.pdf with the following information (to reproduce, run scripts/visualization_test.sh):
 
-<img src="PAM.png" alt="pams">
+<img src="PAMs.png" alt="pams">
 
 For each attempt, the report shows a logo sequence and a consensus. 
 
