@@ -1,4 +1,4 @@
-# Swiper
+<img width="316" height="125" alt="image" src="https://github.com/user-attachments/assets/8ad0d375-afd8-4ed6-a46c-7e849cc79c4e" /># Swiper
 
 <img src="swiper.png" alt="logo" width="150">
 
@@ -11,10 +11,37 @@ Swiper identifies the protospacer-adjacent motif (PAM) of an uncharacterized Cas
 The Monte-Carlo statistical test shows when the consensus is stable and the search can be completed: Swiper, no swiping!
 
 ---
-### Quickstart
+### Quick start
 
 ```bash
 
 git clone https://github.com/bakirillov/swiper.git
 cd swiper
+pip install -r requirements.txt
 ```
+After that create an excel file with list named 1 and the following structure as on the example below:
+| # | PAM | Sequence | Outcome |
+|---|-----|----------|---------|
+| 0 | 3   | CTTCCGC  | -       |
+| 1 | 4   | ATATGGG  | -       |
+| 2 | 5   | AACGGGG  | -       |
+| 3 | 6   | TAAGTGT  | -       |
+
+Replace the sequences with your sequences and in ''Outcome'' input the results of your cleavages, ''-'' if no cleavage happened and ''+'' if cleavage is successful.
+
+After that, run:
+```bash
+
+python ./src/swiper_cli.py -d YOURFILE.xlsx -p "./supplementary/Supplementary Data 3.fasta" -s YOUR_SEED -q YOUR_ROUND_SIZE -a -o "OUTPUT_MODEL_ARCHIVE" -t /tmp/swiper_workdir/
+
+#Use -p None if you want to run against all possible k-mers of given k; 
+#Use -p "./supplementary Data 3.fasta" if you are looking for 7nt candidate; 
+#Use -p "./supplementary Data 2.fasta" if you are looking for 6nt candidate; 
+#If you want your own Golden Set, generate it according to ./notebooks/EDF1.ipynb;
+```
+
+
+---
+### Reproduction instructions
+
+Read and follow REPRODUCE.md.
