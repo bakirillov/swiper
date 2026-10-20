@@ -79,6 +79,7 @@ def sample_from_consensus(consensus, n=1):
     ]
 
 consensus = "NNGAVNN"
+# Unrelated random sequences
 random_seqs = ["".join(a) for a in 
                np.random.choice(list(iupac_map["N"]), (len(consensus), 9)).T]
 samples = sample_from_consensus(consensus, n=9) + random_seqs
