@@ -88,6 +88,21 @@ samples = sample_from_consensus(consensus, n=9) + random_seqs
 Order synthesis and perform cleavage assay, fill the Excel file as described above. From that point on, follow the "Quick start" instruction.
 
 ---
+### Citation
+
+If you use Swiper, please cite:
+
+```latex
+@article{<key>,
+  title   = {Sequencing-Free Protospacer-Adjacent Motif Discovery for
+             Uncharacterized CRISPR-Cas9 Orthologs via Active Learning},
+  author  = {<authors>},
+  journal = {<journal>},
+  year    = {<year>},
+  doi     = {<doi>}
+}```
+
+---
 ### Reproduction instructions
 
 To reproduce all the figures and tables from the paper, read and follow REPRODUCE.md.
