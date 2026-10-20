@@ -1,4 +1,4 @@
-<img width="316" height="125" alt="image" src="https://github.com/user-attachments/assets/8ad0d375-afd8-4ed6-a46c-7e849cc79c4e" /># Swiper
+# Swiper
 
 <img src="swiper.png" alt="logo" width="150">
 
