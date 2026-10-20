@@ -1,6 +1,6 @@
 # Swiper
 
-![logo](swiper.png){width=150}
+<img src="swiper.png" alt="logo" width="150">
 
 
 ## Sequencing-free PAM discovery for CRISPR-Cas9 orthologs via active learning.
