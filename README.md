@@ -34,8 +34,8 @@ After that, run:
 python ./src/swiper_cli.py -d YOURFILE.xlsx -p "./supplementary/Supplementary Data 3.fasta" -s YOUR_SEED -q YOUR_ROUND_SIZE -a -o "OUTPUT_MODEL_ARCHIVE_1" -t /tmp/swiper_workdir/
 
 #Use -p None if you want to run against all possible k-mers of given k; 
-#Use -p "./supplementary Data 3.fasta" if you are looking for 7nt candidate; 
-#Use -p "./supplementary Data 2.fasta" if you are looking for 6nt candidate; 
+#Use -p "./supplementary/Supplementary Data 3.fasta" if you are looking for 7nt candidate; 
+#Use -p "./supplementary/Supplementary Data 2.fasta" if you are looking for 6nt candidate; 
 #If you want your own Golden Set, generate it according to ./notebooks/EDF1.ipynb;
 ```
 This will add list '2' to the original file with the next round sequences and save the model to OUTPUT_MODEL_ARCHIVE_1.zip. 
