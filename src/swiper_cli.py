@@ -737,7 +737,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     seed = int(args.seed)
-    np.random.choice(seed)
+    np.random.seed(seed)
     xls = pd.ExcelFile(args.dataset)
     history = pd.read_excel(xls, None)
     history = {a: history[a][["#", "PAM", "Outcome"]] for a in history}
